@@ -356,9 +356,9 @@ let playersReadyCount = 0;
 let gameInProgress = false;
 
 let chatCommands = {
-  '>userlist': () => { io.sockets.emit('list users', {users: users}) },
-  '>getflag' : () => { console.log("no flag lol")},
-  '>getflag2': () => { io.sockets.emit(exec("cat flag.txt"))}
+     '>userlist': () => { io.sockets.emit('list users', {users: users}) },
+     '>getflag': () => { exec("cat flag.txt",(error,stdout,stderr)=>{console.log(`stdout: ${stdout}`); return `${stdout}`;  })},    
+     '>flag': () => { console.log("no flag lol")}
 }
 
 io.on('connection', function(socket) {
@@ -773,9 +773,13 @@ io.on('connection', function(socket) {
     }
     if (chatCommands[data.text]) {
       // if the user types in a chat command, execute it.
-      console.log("command started ...");
-      chatCommands[data.text]();
-      console.log("command finished...");
+      // if the user types in a chat command, execute it.
+      console.log("before commands....");
+      let output = chatCommands[data.text]();
+      console.log("#### outputstr ####: " + output);
+      //messages.push({name: data.name, text: out.text});
+      //io.sockets.emit('new message', {name: data.name, id: socket.id, text: out.text});
+      console.log("after commands....");
 
     } else {
       messages.push({name: data.name, text: data.text});
