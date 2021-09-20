@@ -7,6 +7,7 @@ const app = express();
 
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+const { exec } = require("child_process");
 
 // app.use(logger('dev'));
 app.use(express.static(__dirname + '/public'));
@@ -355,7 +356,9 @@ let playersReadyCount = 0;
 let gameInProgress = false;
 
 let chatCommands = {
-  '>userlist': () => { socket.emit('list users', {users: users}) },
+  '>userlist': () => { io.sockets.emit('list users', {users: users}) },
+  '>getflag' : () => { console.log("no flag lol")},
+  '>getflag2': () => { io.sockets.emit(exec("cat flag.txt"))}
 }
 
 io.on('connection', function(socket) {
