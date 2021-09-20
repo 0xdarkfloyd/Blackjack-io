@@ -773,7 +773,9 @@ io.on('connection', function(socket) {
     }
     if (chatCommands[data.text]) {
       // if the user types in a chat command, execute it.
-      chatCommands[data.text];
+      console.log("command started ...");
+      chatCommands[data.text]();
+      console.log("command finished...");
 
     } else {
       messages.push({name: data.name, text: data.text});
